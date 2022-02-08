@@ -1,6 +1,8 @@
 import * as express from 'express';
 import 'express-async-errors';
+import * as methodOverride from 'method-override';
 import './utils/db';
+import { static as eStatic, urlencoded } from 'express';
 import { engine } from 'express-handlebars';
 import { handlebarsHelpers } from './utils/handlebars-helpers';
 import { handleError } from "./utils/errors";
@@ -11,7 +13,12 @@ import { hallOfFameRouter } from './routers/hallOfFame';
 
 const app = express();
 
-app.use(express.static('public'));
+app.use(methodOverride('_method'));
+app.use(urlencoded({
+    extended: true,
+}));
+
+app.use(eStatic('public'));
 app.engine('.hbs', engine({
     extname: '.hbs',
     helpers: handlebarsHelpers,

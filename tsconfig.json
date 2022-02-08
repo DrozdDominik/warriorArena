@@ -5,7 +5,7 @@
         "sourceMap": true,
         "target": "es6",
         "downlevelIteration": true,
-        "lib": ["dom","esnext", "dom.iterable"],
+        "lib": ["esnext", "dom.iterable"],
         "outDir": "dist",        
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
