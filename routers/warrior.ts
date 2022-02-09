@@ -4,6 +4,6 @@ import { WarriorRecord } from "../records/warrior.record";
 export const warriorRouter = Router();
 
 warriorRouter
-    .get('/', async (req, res) => {
-        
+    .get('/', (req, res) => {
+      
     })

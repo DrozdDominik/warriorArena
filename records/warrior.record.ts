@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { WarriorEntity } from "../types/warrior";
 import { FieldPacket } from "mysql2";
 
-// type WarriorNameResults = [Record<'name', string>[], FieldPacket[]];
+type WarriorNameResults = [Record<'name', string>[], FieldPacket[]];
 
 type WarriorRecordResults = [WarriorEntity[], FieldPacket[]];
 
@@ -23,11 +23,7 @@ export class WarriorRecord {
         if(!obj.name || obj.name.length < 2 || obj.name.length > 50) {
             throw new ValidationError('Imię wojownika musi mieć od 2 do 50 znaków.');
         }
-       
-        // if(this.isNameUnique(obj.name.toLowerCase())){
-        //     throw new ValidationError('Imię wojwnika musi być unikalne, wielkość liter nie ma znaczenia.')
-        // }
-
+  
         if(obj.strength < 1 || obj.defense < 1 || obj.endurance < 1|| obj.agility < 1) {
             throw new ValidationError('Każdy z atrybutów musi mieć wartość conajmniej równą 1.');
         }
@@ -43,18 +39,15 @@ export class WarriorRecord {
         this._endurance = obj.endurance;
         this._agility = obj.agility;
         this._victories = obj.victories;
-    }  
-
-    // private async isNameUnique(name: string): Promise<boolean> {
-
-    //     const[results] = await pool.execute('SELECT `name` FROM `warriors`;') as WarriorNameResults;
-    //     const names = results.map(result => result.name.toLowerCase());        
-    //     return names.includes(name);
-    //  } 
+    } 
 
     get name() {
          return this._name;
      }
+
+    set name(name: string) {
+        this._name = name;
+    } 
 
     get strength() {
          return this._strength;
@@ -80,9 +73,16 @@ export class WarriorRecord {
         return this._victories;
     }
 
-    set victories(sum: number) {
-        this._victories = sum;
+    public updateVictories():void {
+        this._victories++;
     }
+    
+    private async isNameUnique(name: string): Promise<boolean> {
+
+        const[results] = await pool.execute('SELECT `name` FROM `warriors`;') as WarriorNameResults;
+        const names = results.map(result => result.name.toLowerCase());        
+        return names.includes(name);
+     } 
 
     public async insert(): Promise<string> {
         if (!this._id) {
@@ -91,6 +91,10 @@ export class WarriorRecord {
 
         if(!this._victories) {
             this._victories = 0;
+        }
+
+        if(this.isNameUnique(this._name.toLowerCase())) {
+            throw new ValidationError('Imię wojwnika musi być unikalne, wielkość liter nie ma znaczenia.')
         }
 
         await pool.execute('INSERT INTO `warriors` VALUES (:id, :name, :strength, :defense, :endurance, :agility, :victories);', {
@@ -111,11 +115,18 @@ export class WarriorRecord {
         return results.map(obj => new WarriorRecord(obj));   
     }
 
-    public async getOne(id: string): Promise<WarriorRecord> | null {
+    public static async getOne(id: string): Promise<WarriorRecord> | null {
         const [results] = await pool.execute('SELECT * FROM `warriors` WHERE `id` = :id;', {
-            id, 
-        }) as WarriorRecordResults;
+            id
+        }) as WarriorRecordResults;        
         return results.length === 0 ? null : new WarriorRecord(results[0]);
+    }
+
+    public async update(): Promise<void> {
+        await pool.execute('UPDATE `warriors` SET `victories` = :victories WHERE `id` = :id;', {
+            victories: this._victories,
+            id: this._id,
+        });
     }
         
 }

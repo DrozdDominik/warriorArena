@@ -4,5 +4,5 @@ export const menuRouter = Router();
 
 menuRouter
     .get('/', (req, res) => {
-        res.send('Menu');
+        
     })
