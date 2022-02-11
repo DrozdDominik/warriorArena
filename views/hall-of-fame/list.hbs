@@ -1,0 +1,9 @@
+<h2>Oto wojownicy z największą ilością zwycięstw:</h2>
+<ul>
+    {{#each warriors}}
+        <li>
+            {{this._name}} odniósł zwycięstw: {{this._victories}}
+        </li>
+    {{/each}}
+</ul>
+{{> back-to-home}}

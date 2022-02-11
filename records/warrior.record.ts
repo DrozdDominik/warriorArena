@@ -10,26 +10,28 @@ type WarriorRecordResults = [WarriorEntity[], FieldPacket[]];
 
 export class WarriorRecord {
 
-    private _id: string;
-    private _victories: number;
+    private _id?: string;
+    private _victories?: number;
     private _name: string;
-    private _strength: number;
-    private _defense: number;
-    private _endurance: number;
-    private _agility: number;
+    private readonly _strength: number;
+    private readonly _defense: number;
+    private readonly _endurance: number;
+    private readonly _agility: number;
 
     constructor(obj: WarriorEntity){
 
         if(!obj.name || obj.name.length < 2 || obj.name.length > 50) {
-            throw new ValidationError('Imię wojownika musi mieć od 2 do 50 znaków.');
+            throw new ValidationError(`Imię wojownika musi mieć od 2 do 50 znaków. Obecnie jest to ${obj.name.length}`);
         }
   
         if(obj.strength < 1 || obj.defense < 1 || obj.endurance < 1|| obj.agility < 1) {
             throw new ValidationError('Każdy z atrybutów musi mieć wartość conajmniej równą 1.');
         }
 
-        if(obj.strength + obj.defense + obj.endurance + obj.agility > 10){
-            throw new ValidationError('Suma punktów artybutów wynosi 10.');
+        const sum =[obj.strength, obj.defense, obj.endurance, obj.agility].reduce((prev, curr) => prev + curr, 0);
+
+        if(sum > 10){
+            throw new ValidationError(`Suma punktów artybutów wynosi 10. Obecnie jest tp ${sum}`);
         }        
 
         this._id = obj.id;

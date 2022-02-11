@@ -7,7 +7,7 @@ import { engine } from 'express-handlebars';
 import { handlebarsHelpers } from './utils/handlebars-helpers';
 import { handleError } from "./utils/errors";
 import { warriorRouter } from './routers/warrior';
-import { menuRouter } from './routers/menu';
+import { homeRouter } from './routers/home';
 import { arenaRouter } from './routers/arena';
 import { hallOfFameRouter } from './routers/hallOfFame';
 
@@ -25,14 +25,14 @@ app.engine('.hbs', engine({
 }));
 app.set('view engine', '.hbs');
 
-app.use('/', menuRouter);
+app.use('/', homeRouter);
 app.use('/warrior', warriorRouter);
 app.use('/arena', arenaRouter);
 app.use('/fame', hallOfFameRouter);
 
 app.use(handleError);
 
-app.listen(3000, '127.0.0.1', () => {
+app.listen(3000, '0.0.0.0', () => {
     console.log('Server is running...');
 });
 
