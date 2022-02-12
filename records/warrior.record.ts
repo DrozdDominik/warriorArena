@@ -74,10 +74,6 @@ export class WarriorRecord {
     get victories() {
         return this._victories;
     }
-
-    public updateVictories():void {
-        this._victories++;
-    }
     
     private async isNameUnique(name: string): Promise<boolean> {
 
@@ -125,6 +121,8 @@ export class WarriorRecord {
     }
 
     public async update(): Promise<void> {
+        this._victories++;
+
         await pool.execute('UPDATE `warriors` SET `victories` = :victories WHERE `id` = :id;', {
             victories: this._victories,
             id: this._id,
