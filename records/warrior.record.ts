@@ -75,11 +75,10 @@ export class WarriorRecord {
         return this._victories;
     }
     
-    private async isNameUnique(name: string): Promise<boolean> {
-
+    private async isNameUnique(name: string): Promise<boolean> {        
         const[results] = await pool.execute('SELECT `name` FROM `warriors`;') as WarriorNameResults;
-        const names = results.map(result => result.name.toLowerCase());        
-        return names.includes(name);
+        const names = results.map(result => result.name.toLowerCase());          
+        return names.includes(name.toLowerCase());
      } 
 
     public async insert(): Promise<string> {
@@ -91,7 +90,7 @@ export class WarriorRecord {
             this._victories = 0;
         }
 
-        if(this.isNameUnique(this._name.toLowerCase())) {
+        if(await this.isNameUnique(this._name)) {            
             throw new ValidationError('Imię wojwnika musi być unikalne, wielkość liter nie ma znaczenia.')
         }
 
