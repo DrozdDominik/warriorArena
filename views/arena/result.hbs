@@ -1,5 +1,19 @@
-<h1>Wynik walki:</h1>
-<h2>Zwyciężył: {{winner._name}}</h2>
+<h1>Przebieg walki:</h1>
+{{#each rounds}}
+    <div>
+        <p>{{this.attack}}</p>
+        <p>
+            {{#if this.defense}}
+                Udana obrona!
+            {{else}}
+                Nieudana obrona!
+            {{/if}}
+        </p>
+        <p>{{this.attackResult}}</p>
+    </div>
+{{/each}}
+
+<h2>Zwyciężył: {{name}}</h2>
 
 <a href="/fame">Zobacz salę sław</a>
 {{> back-to-home}}

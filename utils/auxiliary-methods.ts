@@ -1,4 +1,5 @@
 import { WarriorRecord } from "../records/warrior.record"
+import { Log, Round } from "../types/log";
 
 export const compareWarriors = (firstWarrior: WarriorRecord, secondWarrior: WarriorRecord): number => {
     if(firstWarrior.victories < secondWarrior.victories){
@@ -10,9 +11,14 @@ export const compareWarriors = (firstWarrior: WarriorRecord, secondWarrior: Warr
     }
 };
 
-export const fight = (firstWarrior: WarriorRecord, secondWarrior: WarriorRecord): WarriorRecord => {
+export const fight = (firstWarrior: WarriorRecord, secondWarrior: WarriorRecord): Log => {
     
     let active = 1;
+    let log:Log = {
+        winner: null,
+        rounds: [],       
+    };
+    
     
     let firstWarriorHP = firstWarrior.endurace * 10;
     let firstWarriorShield = firstWarrior.defense;
@@ -20,6 +26,12 @@ export const fight = (firstWarrior: WarriorRecord, secondWarrior: WarriorRecord)
     let secondWarriorShield = secondWarrior.defense;
 
     while(true) {
+        const round: Round = {
+            attack: '',
+            defense: false,
+            attackResult: '',
+        }
+
         let attacker = active === 1 ? firstWarrior : secondWarrior;
         let defender = active === 1 ? secondWarrior : firstWarrior;
 
@@ -27,20 +39,30 @@ export const fight = (firstWarrior: WarriorRecord, secondWarrior: WarriorRecord)
         let defenderShield = active === 1 ? secondWarriorShield : firstWarriorShield;
 
         let attackStrength = attacker.strength;
-
+        round.attack = `${attacker.name} atakuje ${defender.name} z siłą równą ${attackStrength}`;
+        
         if((defenderShield + defender.agility) > attackStrength) {
             if(attackStrength >= defenderShield) {
-                defenderHP += (defenderShield - attackStrength);
+                round.defense = true;
+                const damage = defenderShield - attackStrength;
+                defenderHP += damage;
                 defenderShield = 0;
+                round.attackResult = `Utracono tarczę! Aktualne HP ${defender.name} wynosi ${defenderHP} (-${damage})`;
             } else {
+                round.defense = true;
                 defenderShield -= attackStrength;
+                round.attackResult = `Utracono ${attackStrength} punktów tarczy. ${defender.name} pozostało ${defenderShield} punktów tarczy.`;
             }
         } else {
             defenderHP -= attackStrength
+            round.attackResult = `Aktualne HP ${defender.name} wynosi ${defenderHP} (-${attackStrength})`;
         }
 
+        log.rounds.push(round);
+        
         if(defenderHP <= 0) {
-            return attacker;
+            log.winner = attacker;
+            return log;
         }
 
         if(active === 1) {

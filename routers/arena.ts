@@ -15,8 +15,11 @@ arenaRouter
         const firstWarrior = await WarriorRecord.getOne(firstWarriorId);
         const secondWarrior= await WarriorRecord.getOne(secondWarriorId);
 
-        const winner = fight(firstWarrior, secondWarrior);
+        const logs = fight(firstWarrior, secondWarrior);
+        const rounds = logs.rounds;
+        const winner = logs.winner;
         await winner.update();
+        const name = winner.name;
 
-        res.render('arena/result', {winner});
+        res.render('arena/result', {rounds, name});
     })
