@@ -1,19 +1,20 @@
 <h1>Przebieg walki:</h1>
 {{#each rounds}}
-    <div>
-        <p>{{this.attack}}</p>
-        <p>
+<div class="round">
+    <h4 class="title">Runda {{calculateRound @index}}</h4>
+        <p class="attack"><img class="icon" src="/img/sword.png" alt="sword"> {{this.attack}}</p> 
+        <p class="defense">
             {{#if this.defense}}
-                Udana obrona!
+                <span class="success"><img class="icon" src="/img/shield.png" alt="shield"> Udana obrona!</span>
             {{else}}
-                Nieudana obrona!
+                <span class="fail"><img class="icon" src="/img/crash.png" alt="broken shield"> Nieudana obrona!</span>
             {{/if}}
         </p>
-        <p>{{this.attackResult}}</p>
-    </div>
+        <p class="result">{{this.attackResult}} <img class="icon" src="/img/heart.png" alt="heart"></p>
+</div>
 {{/each}}
 
-<h2>Zwyciężył: {{name}}</h2>
+<h3>Zwyciężył: <span class="winner">{{name}}</span></h3>
 
-<a href="/fame">Zobacz salę sław</a>
+<a href="/fame"><button class="btn btn-fame">Zobacz salę sław</button></a>
 {{> back-to-home}}

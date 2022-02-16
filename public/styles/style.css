@@ -1,0 +1,156 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.round {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.attack {
+    font-size: 20px;
+    color: orange;
+}
+
+.defense {
+    font-size: 20px;
+}
+
+.success {
+    color: green;
+}
+
+.fail {
+    color: red;
+}
+
+.result {
+    font-size: 20px;
+    color: cadetblue;
+}
+
+.winner {
+    font-size: 25px;
+    color: blue;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.title {
+    padding: 30px;
+}
+
+.register {
+    margin: 20px;    
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+form div, form label, form input {
+    width: 100%;
+}
+
+.field {
+    margin: 16px 0;
+}
+
+.field:focus-within label {
+    color: #000;
+    letter-spacing: 2px;
+  }
+
+label, input {
+    padding: 8px;
+}
+
+input {
+    background: rgba(158, 222, 233, 0.5);
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 8px 6px -6px rgb(101, 110, 192);
+}
+
+input:focus {
+    background: white;
+    box-shadow: none;
+  }
+
+.add-label {
+    align-self: flex-start;
+}
+
+.btn {
+    align-items: center;
+    appearance: none;
+    background-color: #3EB2FD;
+    background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%);
+    background-size: calc(100% + 20px) calc(100% + 20px);
+    border-radius: 100px;
+    border-width: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: CircularStd,sans-serif;
+    font-size: 1rem;
+    height: auto;
+    justify-content: center;
+    line-height: 1.5;
+    padding: 6px 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color .2s,background-position .2s;
+    user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.btn:active,
+.btn:focus {
+  outline: none;
+}
+
+.btn:hover {
+  background-position: -20px -20px;
+}
+
+.btn:focus:not(:active) {
+  box-shadow: rgba(40, 170, 255, 0.25) 0 0 0 .125em;
+}
+
+.btn-fame {
+    background-color: #913efd;
+    background-image: linear-gradient(1deg, #771cee, #340752 99%);
+}
+
+.btn-add {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    background-color: #0db8ec;
+    background-image: linear-gradient(1deg, #138d96, #0f2b42 99%);
+}
+

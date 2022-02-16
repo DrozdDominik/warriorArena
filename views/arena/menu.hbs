@@ -1,21 +1,13 @@
 <h2>Witaj na arenie śmiałku!</h2>
 <h4>Wybierz wojowników do walki:</h4>
 <form action="/arena" method="POST">
-<label>Pierwszy wojownik
-<select name="first-warrior">
-    {{#each warriors}}
-    <option value="{{this._id}}">{{this._name}}</option>
-    {{/each}}
-</select>
-</label>
-<label>Drugi wojownik
-<select name="second-warrior">
-    {{#each warriors}}
-    <option value="{{this._id}}">{{this._name}}</option>
-    {{/each}}
-</select>
-</label>
-<button>Walka!</button>
+    <label>Pierwszy wojownik
+        {{> warrior-select select-name="warrior1"}}    
+    </label>
+    <label>Drugi wojownik
+        {{> warrior-select select-name="warrior2"}}
+    </label>
+    <button>Walka!</button>
 </form>
 
 {{> back-to-home}}

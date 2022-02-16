@@ -1,9 +1,33 @@
 <h2>Oto wojownicy z największą ilością zwycięstw:</h2>
-<ul>
-    {{#each warriors}}
-        <li>
-            {{this._name}} odniósł zwycięstw: {{this._victories}}
-        </li>
-    {{/each}}
-</ul>
+<table>
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+               Wojownik 
+            </th>
+            <th>
+                 Zwycięstwa
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each warriors}}
+            <tr>
+                <th>
+                    {{calculateRound @index}}
+                </th>
+                <td>
+                    {{this._name}}
+                </td>
+                <td>
+                    {{this._victories}}
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
 {{> back-to-home}}

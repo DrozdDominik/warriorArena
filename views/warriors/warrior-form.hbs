@@ -1,10 +1,25 @@
-<h2>Rejestracja wojownika</h2>
-<form action="/warrior" method="POST">
-<label>Imię: <input type="text" name="name"></label>
-<label>Siła: <input type="number" step="1" name="strength"></label>
-<label>Obrona: <input type="number" step="1" name="defense"></label>
-<label>Wytrzymałość: <input type="number" step="1" name="endurance"></label>
-<label>Zwinność: <input type="number" step="1" name="agility"></label>
-<button>Zarejestruj!</button>
+<h2 class="title">Rejestracja wojownika</h2>
+<form action="/warrior" method="POST" class="register">
+    <div class="field" tabindex="1">
+        <label for="name">Imię</label>
+        <input type="text" name="name" minlength="2" maxlength="50">
+    </div>
+    <div class="field" tabindex="2">
+        <label for="name">Siła</label>
+        <input type="number" step="1" name="strength" min="1" max="7">
+    </div>
+    <div class="field" tabindex="3">
+        <label for="name">Obrona</label>
+        <input type="number" step="1" name="defense" min="1" max="7">
+    </div>
+    <div class="field" tabindex="4">
+        <label for="name">Wytrzymałość</label>
+        <input type="number" step="1" name="endurance" min="1" max="7">
+    </div>
+    <div class="field" tabindex="5">
+        <label for="name">Zwinność</label>
+        <input type="number" step="1" name="agility" min="1" max="7">
+    </div>
+    <button class="btn btn-add">Zarejestruj!</button>
 </form>
 {{> back-to-home}}

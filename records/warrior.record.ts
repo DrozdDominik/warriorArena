@@ -20,18 +20,26 @@ export class WarriorRecord {
 
     constructor(obj: WarriorEntity){
 
+        const attributes = [obj.strength, obj.defense, obj.endurance, obj.agility];
+
+        this._id = obj.id ?? uuid();
+        this._victories = obj.victories ?? 0;
+
         if(!obj.name || obj.name.length < 2 || obj.name.length > 50) {
             throw new ValidationError(`Imię wojownika musi mieć od 2 do 50 znaków. Obecnie jest to ${obj.name.length}`);
         }
-  
-        if(obj.strength < 1 || obj.defense < 1 || obj.endurance < 1|| obj.agility < 1) {
-            throw new ValidationError('Każdy z atrybutów musi mieć wartość conajmniej równą 1.');
-        }
 
-        const sum =[obj.strength, obj.defense, obj.endurance, obj.agility].reduce((prev, curr) => prev + curr, 0);
+        for(const attribute of attributes) {
+            if(attribute < 1) {
+                console.log(attribute)
+                throw new ValidationError('Każdy z atrybutów musi mieć wartość conajmniej równą 1.');
+            }
+        }       
+
+        const sum = attributes.reduce((prev, curr) => prev + curr, 0);
 
         if(sum > 10){
-            throw new ValidationError(`Suma punktów artybutów wynosi 10. Obecnie jest tp ${sum}`);
+            throw new ValidationError(`Suma punktów artybutów wynosi 10. Obecnie jest to ${sum}`);
         }        
 
         this._id = obj.id;
@@ -74,11 +82,16 @@ export class WarriorRecord {
     get victories() {
         return this._victories;
     }
+
+    set victories(victories: number) {
+        this._victories = victories;
+    }
     
-    private async isNameUnique(name: string): Promise<boolean> {        
-        const[results] = await pool.execute('SELECT `name` FROM `warriors`;') as WarriorNameResults;
-        const names = results.map(result => result.name.toLowerCase());          
-        return names.includes(name.toLowerCase());
+    public static async isNameTaken(name: string): Promise<boolean> {        
+        const[results] = await pool.execute('SELECT * FROM `warriors` WHERE `name` = :name;', {
+            name,
+        }) as WarriorNameResults;            
+        return results.length > 0;
      } 
 
     public async insert(): Promise<string> {
@@ -88,10 +101,6 @@ export class WarriorRecord {
 
         if(!this._victories) {
             this._victories = 0;
-        }
-
-        if(await this.isNameUnique(this._name)) {            
-            throw new ValidationError('Imię wojwnika musi być unikalne, wielkość liter nie ma znaczenia.')
         }
 
         await pool.execute('INSERT INTO `warriors` VALUES (:id, :name, :strength, :defense, :endurance, :agility, :victories);', {
@@ -119,10 +128,15 @@ export class WarriorRecord {
         return results.length === 0 ? null : new WarriorRecord(results[0]);
     }
 
-    public async update(): Promise<void> {
-        this._victories++;
+    public static async getTopWarriors(quantity: number): Promise<WarriorRecord[]> {
+        const[results] = await pool.execute('SELECT * FROM `warriors` ORDER BY `victories` DESC LIMIT :quantity;', {
+            quantity,
+        }) as WarriorRecordResults;
+        return results.map(obj => new WarriorRecord(obj));
+    }
 
-        await pool.execute('UPDATE `warriors` SET `victories` = :victories WHERE `id` = :id;', {
+    public async update(): Promise<void> {
+            await pool.execute('UPDATE `warriors` SET `victories` = :victories WHERE `id` = :id;', {
             victories: this._victories,
             id: this._id,
         });

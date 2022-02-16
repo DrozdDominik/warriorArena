@@ -11,6 +11,17 @@ export const compareWarriors = (firstWarrior: WarriorRecord, secondWarrior: Warr
     }
 };
 
+export const onlyFirstLetterUpperCase = (name: string): string => {
+    for(let i = 0; i < name.length; i++) {
+        if(i === 0) {
+            name[i].toUpperCase();
+        } else {
+            name[i].toLowerCase();
+        }
+        return name;
+    }
+}
+
 export const fight = (firstWarrior: WarriorRecord, secondWarrior: WarriorRecord): Log => {
     
     let active = 1;
@@ -47,7 +58,7 @@ export const fight = (firstWarrior: WarriorRecord, secondWarrior: WarriorRecord)
                 const damage = defenderShield - attackStrength;
                 defenderHP += damage;
                 defenderShield = 0;
-                round.attackResult = `Utracono tarczę! Aktualne HP ${defender.name} wynosi ${defenderHP} (-${damage})`;
+                round.attackResult = `Utracono tarczę! Aktualne HP ${defender.name} wynosi ${defenderHP} (${damage})`;
             } else {
                 round.defense = true;
                 defenderShield -= attackStrength;

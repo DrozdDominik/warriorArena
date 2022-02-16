@@ -6,8 +6,7 @@ export const hallOfFameRouter = Router();
 
 hallOfFameRouter
     .get('/', async (req, res) => {
-        const warriors = await WarriorRecord.listAll();
-        warriors.sort(compareWarriors);
-        
+        const warriors = await WarriorRecord.getTopWarriors(10);
+              
         res.render('hall-of-fame/list', {warriors});
     })
